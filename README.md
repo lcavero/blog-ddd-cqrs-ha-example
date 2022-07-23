@@ -1,6 +1,6 @@
-#  Symfony Skeleton DDD + CQRS + Hexagonal Architecture
+#  Symfony Blog DDD + CQRS + Hexagonal Architecture
 
-A Symfony skeleton project ready to implements CQRS, Hexagonal Architecture and DDD
+A Symfony blog project made with CQRS, Hexagonal Architecture and DDD
 
 ## Docker integration
 
