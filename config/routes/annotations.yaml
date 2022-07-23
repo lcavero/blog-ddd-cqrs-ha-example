@@ -1,0 +1,3 @@
+applicationstatus:
+    resource: ../../src/ApplicationStatus/Infrastructure/Controller/
+    type: annotation

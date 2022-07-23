@@ -1,0 +1,72 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    # Reminds use private constructors (semantic constructors) in not-service class to evade automatic injection
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Shared/Infrastructure/Kernel.php'
+            - '../src/Tests/'
+      
+    Lib\:
+        resource: '../lib/'
+            
+    _instanceof:
+        Lib\CQRS\CommandHandler:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+        Lib\CQRS\QueryHandler:
+            tags:
+                - { name: messenger.message_handler, bus: query.bus }
+
+        App\Shared\Infrastructure\Controller\Controller:
+            tags: [ 'controller.service_arguments' ]
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+
+    # CQRS
+    Lib\CQRS\MessengerCommandBus:
+        arguments: ['@command.bus']
+    Lib\CQRS\CommandBus: '@Lib\CQRS\MessengerCommandBus'
+
+    Lib\CQRS\MessengerQueryBus:
+        arguments: ['@query.bus']
+    Lib\CQRS\QueryBus: '@Lib\CQRS\MessengerQueryBus'
+
+    Lib\CQRS\MessengerEventBus:
+        arguments: [ '@event.bus' ]
+    Lib\CQRS\EventBus: '@Lib\CQRS\MessengerEventBus'
+
+    # Serializer
+    Lib\Serializer\JsonSerializerFactory: ~
+    Lib\Serializer\JsonSerializer:
+        autowire: false
+        arguments: ['@Lib\Serializer\JsonSerializerFactory']
+        
+   
+
+    # Event Listener
+    App\Shared\Infrastructure\EventListener\HttpExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Shared\Infrastructure\EventListener\JsonRequestParserRequestListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
+
+
+imports:
+    - { resource: services/ }
+    
