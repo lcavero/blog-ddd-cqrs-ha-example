@@ -9,6 +9,12 @@
         <id name="id" type="string" column="id">
             <generator strategy="NONE"/>
         </id>
+
+        <field name="username" column="username" type="string" length="255" nullable="false" unique="true" />
+        <field name="password" column="password" type="string" length="255" nullable="false" unique="false" />
+        <field name="email" column="email" type="string" length="255" nullable="false" unique="true" />
+        <field name="phone" column="phone" type="string" length="20" nullable="true" unique="false" />
+        <field name="website" column="website" type="string" length="255"  nullable="true" unique="false" />
     </entity>
 
 </doctrine-mapping>
