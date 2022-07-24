@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="https://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Post\Domain\Post" table="post">
+
+        <id name="id" type="string" column="id">
+            <generator strategy="NONE"/>
+        </id>
+
+        <field name="title" column="title" type="string" length="255" nullable="false" unique="false" />
+        <field name="body" column="body" type="string" length="1000" nullable="false" unique="false" />
+        <many-to-one field="author" target-entity="App\User\Domain\User" />
+    </entity>
+
+</doctrine-mapping>
