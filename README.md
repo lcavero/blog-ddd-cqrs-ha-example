@@ -28,6 +28,8 @@ with Symfony Messenger, exception handling, serialization, validation.... .
 I use [named constructors](https://verraes.net/2014/06/named-constructors-in-php/) in some classes to prevent Symfony 
 include them as services and due to semantic reasons.
 
+I'm only testing Domain Entities behaviour, other tests should probably be created.
+
 **Why Controller is creating the identifiers?**
 Follow CQRS standard implies return no result in commands, but it's necessary return domain objects id's as the response 
 in POST creation requests. So, I think is acceptable create a not-domain identifier in the controller, and let the 
