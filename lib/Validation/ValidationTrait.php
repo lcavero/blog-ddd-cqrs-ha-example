@@ -10,7 +10,7 @@ trait ValidationTrait
 {
     public function validate(array $payload, Collection $constraints): void
     {
-        $validator  = Validation::createValidator();
+        $validator = Validation::createValidator();
         $violations = $validator->validate($payload, $constraints);
         if (count($violations) !== 0) {
             throw ValidationException::fromViolations($violations);

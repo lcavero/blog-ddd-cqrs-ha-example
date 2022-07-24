@@ -14,12 +14,28 @@ This project has been created using the [Symfony Docker](https://github.com/dung
 4. Run `docker-compose up` (the logs will be displayed in the current shell)
 5. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
 6. Run `docker-compose down --remove-orphans` to stop the Docker containers.
-7. If you work on linux and cannot edit some of the project files right after the first installation, you can run docker-compose run --rm php chown -R $(id -u):$(id -g) . to set yourself as owner of the project files that were created by the docker container.
+7. If you work on linux and cannot edit some of the project files right after the first installation, you can run 
+8. docker-compose run --rm php chown -R $(id -u):$(id -g) . to set yourself as owner of the project files that were 
+9. created by the docker container.
 
 
 # Comments
 
 I have started from the [symfony-ddd-cqrs-hexagonal-skeleton](https://github.com/lcavero/symfony-ddd-cqrs-hexagonal-skeleton)
- project (also implemented by myself) as a base that already provides me with some functions that I need, such as CQRS with Symfony Messenger, exception handling, serialization, validation.... .
+ project (also implemented by myself) as a base that already provides me with some functions that I need, such as CQRS
+with Symfony Messenger, exception handling, serialization, validation.... .
 
-I use [named constructors](https://verraes.net/2014/06/named-constructors-in-php/) in some classes to prevent Symfony include them as services and due to semantic reasons.
+I use [named constructors](https://verraes.net/2014/06/named-constructors-in-php/) in some classes to prevent Symfony 
+include them as services and due to semantic reasons.
+
+**Why Controller is creating the identifiers?**
+Follow CQRS standard implies return no result in commands, but it's necessary return domain objects id's as the response 
+in POST creation requests. So, I think is acceptable create a not-domain identifier in the controller, and let the 
+command turn it into an appropiate Domain Id.
+
+**Why update methods are empty in ORM repositories?**
+A repository should differentiate between creating and updating, regardless of the specific implementation 
+(ORM, ODM, Api, Redis Client...). In the case of Doctrine, no action is required to update an entity, because
+it is already done when the flush method is called by the DoctrineTransactionMiddleware. 
+However, I want to keep the update action in the repository, so if in the future it has to be changed to 
+something else that doesn't work with Doctrine (API repository, for example), update calls are already done.
