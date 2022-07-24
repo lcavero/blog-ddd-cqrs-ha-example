@@ -1,5 +1,6 @@
-application_status:
-    resource: ../../src/ApplicationStatus/Infrastructure/Controller/
+application_status_api:
+    resource: ../../src/ApplicationStatus/Infrastructure/Controller/Api
+    prefix: 'api/application-status'
     type: annotation
 
 post_api:
