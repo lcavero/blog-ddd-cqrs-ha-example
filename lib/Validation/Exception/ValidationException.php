@@ -2,10 +2,11 @@
 
 namespace Lib\Validation\Exception;
 
+use Exception;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class ValidationException extends \Exception implements ValidationExceptionInterface
+class ValidationException extends Exception implements ValidationExceptionInterface
 {
     private ConstraintViolationListInterface $violations;
 

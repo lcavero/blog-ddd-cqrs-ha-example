@@ -2,9 +2,10 @@
 
 namespace Lib\ValueObject\Exception;
 
+use Exception;
 use Throwable;
 
-class InvalidIdException extends \Exception
+class InvalidIdException extends Exception
 {
     private function __construct($message, Throwable $previous = null)
     {

@@ -15,3 +15,11 @@ This project has been created using the [Symfony Docker](https://github.com/dung
 5. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
 6. Run `docker-compose down --remove-orphans` to stop the Docker containers.
 7. If you work on linux and cannot edit some of the project files right after the first installation, you can run docker-compose run --rm php chown -R $(id -u):$(id -g) . to set yourself as owner of the project files that were created by the docker container.
+
+
+# Comments
+
+I have started from the [symfony-ddd-cqrs-hexagonal-skeleton](https://github.com/lcavero/symfony-ddd-cqrs-hexagonal-skeleton)
+ project (also implemented by myself) as a base that already provides me with some functions that I need, such as CQRS with Symfony Messenger, exception handling, serialization, validation.... .
+
+I use [named constructors](https://verraes.net/2014/06/named-constructors-in-php/) in some classes to prevent Symfony include them as services and due to semantic reasons.

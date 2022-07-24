@@ -2,7 +2,6 @@
 
 namespace Lib\ValueObject;
 
-use Lib\ValueObject\Id;
 use Symfony\Component\Uid\Uuid;
 
 class IdFactory

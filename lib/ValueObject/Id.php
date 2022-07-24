@@ -2,6 +2,7 @@
 
 namespace Lib\ValueObject;
 
+use Exception;
 use Lib\ValueObject\Exception\InvalidIdException;
 use Symfony\Component\Uid\Uuid;
 
@@ -18,7 +19,7 @@ class Id
     {
         try {
             return new static($id);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw InvalidIdException::create(sprintf('Invalid identifier %s received', $id), $e);
         }
     }
