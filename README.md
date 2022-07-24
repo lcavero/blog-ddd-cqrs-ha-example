@@ -28,6 +28,9 @@ with Symfony Messenger, exception handling, serialization, validation.... .
 I use [named constructors](https://verraes.net/2014/06/named-constructors-in-php/) in some classes to prevent Symfony 
 include them as services and due to semantic reasons.
 
+I use [adr pattern](https://en.wikipedia.org/wiki/Action%E2%80%93domain%E2%80%93responder) in Controllers to preserve 
+the Single Responsability principle in them.
+
 I'm only testing Domain Entities behaviour, other tests should probably be created.
 
 **Why Controller is creating the identifiers?**
@@ -41,3 +44,10 @@ A repository should differentiate between creating and updating, regardless of t
 it is already done when the flush method is called by the DoctrineTransactionMiddleware. 
 However, I want to keep the update action in the repository, so if in the future it has to be changed to 
 something else that doesn't work with Doctrine (API repository, for example), update calls are already done.
+
+**Why you are including a trailing slash in all your routes?** The standard is to remove the trailing slash of all routes 
+but recently I have experimented [problems](https://stackoverflow.com/questions/71311305/how-to-prevent-safari-from-dropping-the-authorization-header-when-following-a-sa) 
+in other projects with Safari and the solution was add this trailing slash in my routes to evade Symfony redirection.
+This is fixed in last Safari updates but I am currently adding this slash to prevents old Safari clients can't request correctly.
+
+

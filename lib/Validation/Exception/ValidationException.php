@@ -26,17 +26,17 @@ class ValidationException extends Exception implements ValidationExceptionInterf
         return $this->violations;
     }
 
-    public function messages(): array
+    public function errors(): array
     {
         $accessor = PropertyAccess::createPropertyAccessor();
-        $messages = [];
+        $errors = [];
 
         foreach ($this->violations as $violation) {
-            $value   = $accessor->getValue($messages, $violation->getPropertyPath()) ?? [];
+            $value   = $accessor->getValue($errors, $violation->getPropertyPath()) ?? [];
             $value[] = $violation->getMessage();
-            $accessor->setValue($messages, $violation->getPropertyPath(), $value);
+            $accessor->setValue($errors, $violation->getPropertyPath(), $value);
         }
 
-        return $messages;
+        return $errors;
     }
 }

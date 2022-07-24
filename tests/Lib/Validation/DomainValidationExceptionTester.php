@@ -8,7 +8,7 @@ class DomainValidationExceptionTester
 {
     public static function exceptionHasError(DomainValidationException $exception, string $propertyPath, string $errorText): bool
     {
-        $messages = $exception->messages();
+        $messages = $exception->errors();
         if (count($messages) < 1) {
             return false;
         }
