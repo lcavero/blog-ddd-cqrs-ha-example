@@ -3,8 +3,12 @@
 namespace App\User\Domain\Service;
 
 use App\User\Domain\Exception\InvalidUserPlainPasswordException;
+use App\User\Domain\Exception\UserEmailIsNotUniqueException;
+use App\User\Domain\Exception\UserUsernameIsNotUniqueException;
 use App\User\Domain\Repository\UserRepository;
+use App\User\Domain\Specification\UserEmailIsUniqueSpecification;
 use App\User\Domain\Specification\UserPlainPasswordSpecification;
+use App\User\Domain\Specification\UserUsernameIsUniqueSpecification;
 use App\User\Domain\User;
 use App\User\Domain\UserId;
 use Lib\CQRS\EventBus;
@@ -16,7 +20,9 @@ class RegisterUserService
     public function __construct(
         private UserRepository $repository,
         private EventBus $eventBus,
-        private PasswordHasherFactoryInterface $passwordHasherFactory
+        private PasswordHasherFactoryInterface $passwordHasherFactory,
+        private UserEmailIsUniqueSpecification $emailIsUniqueSpecification,
+        private UserUsernameIsUniqueSpecification $usernameIsUniqueSpecification
     )
     {}
 
@@ -25,6 +31,14 @@ class RegisterUserService
         $passwordSpecification = new UserPlainPasswordSpecification();
         if (!$passwordSpecification->isSatisfiedBy($password)) {
             throw InvalidUserPlainPasswordException::fromPassword($password);
+        }
+
+        if (!$this->emailIsUniqueSpecification->isSatisfiedBy($email)) {
+            throw UserEmailIsNotUniqueException::fromEmail($email);
+        }
+
+        if (!$this->usernameIsUniqueSpecification->isSatisfiedBy($username)) {
+            throw UserUsernameIsNotUniqueException::fromUsername($username);
         }
 
         $passwordHasher = $this->passwordHasherFactory->getPasswordHasher(User::class);

@@ -9,4 +9,5 @@ interface UserReadableRepository
 {
     public function findAll(): array;
     public function findOne(UserId $postId): ?User;
+    public function findBy(array $filters, ?array $orderBy = null, $limit = null, $offset = null): array;
 }

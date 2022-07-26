@@ -20,6 +20,11 @@ class UserORMRepository extends ServiceEntityRepository implements UserRepositor
         return parent::findAll();
     }
 
+    public function findBy(array $filters, ?array $orderBy = null, $limit = null, $offset = null): array
+    {
+        return parent::findBy($filters, $orderBy, $limit, $offset);
+    }
+
     public function findOne(UserId $userId): ?User
     {
         return $this->find($userId->toString());
