@@ -31,7 +31,12 @@ include them as services and due to semantic reasons.
 I use [adr pattern](https://en.wikipedia.org/wiki/Action%E2%80%93domain%E2%80%93responder) in Controllers to preserve 
 the Single Responsability principle in them.
 
-I'm only testing Domain Entities behaviour, other tests should probably be created.
+I'm only testing Domain Entities behaviour, sorry, I'm not very experienced in testing for now.
+
+**Why only API is implemented?**
+I think web side should not be in the same project. It's better to separate backend and frontend into two different projects.
+For now I'm not interested in frontend so this project is gonna be only Api.
+
 
 **Why Controller is creating the identifiers?**
 Follow CQRS standard implies return no result in commands, but it's necessary return domain objects id's as the response 
@@ -49,4 +54,11 @@ something else that doesn't work with Doctrine (API repository, for example), up
 but recently I have experimented [problems](https://stackoverflow.com/questions/71311305/how-to-prevent-safari-from-dropping-the-authorization-header-when-following-a-sa) 
 in other projects with Safari and the solution was add this trailing slash in my routes to evade Symfony redirection.
 This is fixed in last Safari updates but I am currently adding this slash to prevents old Safari clients can't request correctly.
+
+**Why are you using specification pattern with plain values?**
+Standard Specification pattern uses the Domain entity (DE) to validate invariants, however, this is impossible to apply to validate
+DE invariants because I am following the [Always-valid domain model](https://enterprisecraftsmanship.com/posts/always-valid-vs-not-always-valid-domain-model/)
+and I can't pass an invalid DE to the specification. I could simply use *if sentences* in the DE, but I need to do the same validations as
+input validations in the Application Layer, so... I decided to use a little different Specifications to validate plain values. 
+Also, I added a validation context (only used in Application Layer) to return valid error messages to the Presentation Layer.
 
