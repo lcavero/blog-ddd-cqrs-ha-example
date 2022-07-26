@@ -17,7 +17,7 @@ class CreatePostTest extends TestCase
     const TITLE_MAX_LENGTH = 255;
     const BODY_MAX_LENGTH = 1000;
 
-    public function testPostIsCreatedWithNormalData() : void
+    public function testPostIsCreatedWithNormalData(): void
     {
         $postId = PostIdMother::random();
         $author = UserMother::one();

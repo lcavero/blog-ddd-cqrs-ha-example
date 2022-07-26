@@ -27,8 +27,9 @@ class UserPhoneSpecification
             return false;
         }
 
-        if(!preg_match('/\+?([0-9]{2})-?([0-9]{3})-?([0-9]{6,7})/', $phone)) {
+        if(!preg_match('/^\+?(6\d{2}|7[1-9]\d{1})\d{6}$/', $phone)) {
             $this->addError('phone', 'This value not match a valid phone', $phone, $context);
+            return false;
         }
 
         return true;
