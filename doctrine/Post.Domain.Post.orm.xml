@@ -4,7 +4,7 @@
                   xsi:schemaLocation="https://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Post\Domain\Post" table="post">
+    <entity name="App\Post\Domain\Post" table="posts">
 
         <id name="id" type="string" column="id">
             <generator strategy="NONE"/>

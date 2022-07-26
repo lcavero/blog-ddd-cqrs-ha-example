@@ -3,12 +3,12 @@
 namespace App\Post\Application\Query;
 
 use App\Post\Domain\Post;
-use App\Post\Domain\Repository\PostRepository;
+use App\Post\Domain\Repository\PostReadableRepository;
 use Lib\CQRS\QueryHandler;
 
 class GetPostsQueryHandler implements QueryHandler
 {
-    public function __construct(private PostRepository $repository)
+    public function __construct(private PostReadableRepository $repository)
     {}
 
     public function __invoke(GetPostsQuery $query): array

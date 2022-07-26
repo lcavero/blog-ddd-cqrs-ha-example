@@ -7,3 +7,8 @@ post_api:
     resource: ../../src/Post/Infrastructure/Controller/Api
     prefix: '/api/posts'
     type: annotation
+
+user_api:
+    resource: ../../src/User/Infrastructure/Controller/Api
+    prefix: '/api/users'
+    type: annotation

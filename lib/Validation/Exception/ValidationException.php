@@ -32,7 +32,7 @@ class ValidationException extends Exception implements ValidationExceptionInterf
         $errors = [];
 
         foreach ($this->violations as $violation) {
-            $value   = $accessor->getValue($errors, $violation->getPropertyPath()) ?? [];
+            $value = $accessor->getValue($errors, $violation->getPropertyPath()) ?? [];
             $value[] = $violation->getMessage();
             $accessor->setValue($errors, $violation->getPropertyPath(), $value);
         }

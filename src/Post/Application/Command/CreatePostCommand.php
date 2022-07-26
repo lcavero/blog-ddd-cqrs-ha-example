@@ -3,29 +3,36 @@
 namespace App\Post\Application\Command;
 
 use App\Post\Domain\PostId;
-use App\Shared\Application\Validation\ApplicationValidationTrait;
-use App\User\Domain\User;
+use App\Post\Domain\Specification\PostAuthorIdSpecification;
+use App\Post\Domain\Specification\PostBodySpecification;
+use App\Post\Domain\Specification\PostTitleSpecification;
+use App\Shared\Application\Exception\ApplicationValidationException;
+use App\User\Domain\UserId;
 use Lib\CQRS\Command;
+use Lib\Validation\ValidationContext;
 use Lib\ValueObject\Id;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class CreatePostCommand implements Command
 {
-    use ApplicationValidationTrait;
+    private ValidationContext $context;
 
     private PostId $postId;
     private string $title;
     private string $body;
-    private User $author;
+    private UserId $authorId;
 
     private function __construct(Id $postId, array $payload)
     {
-        $this->validate($payload, $this->validationConstrains());
+        $this->context = ValidationContext::create();
 
-        $this->postId = PostId::fromId($postId);
-        $this->title = $payload['title'];
-        $this->body = $payload['body'];
-        $this->author = $payload['author'];
+        $this->setPostId($postId);
+        $this->setTitle($payload['title'] ?? null);
+        $this->setBody($payload['body'] ?? null);
+        $this->setAuthorId($payload['authorId'] ?? null);
+
+        if ($this->context->hasErrors()) {
+            throw ApplicationValidationException::fromViolations($this->context->errors());
+        }
     }
 
     public static function create(Id $postId, array $payload): self
@@ -33,25 +40,14 @@ class CreatePostCommand implements Command
         return new static($postId, $payload);
     }
 
-    private function validationConstrains() : Assert\Collection
-    {
-        return new Assert\Collection([
-            'title' => [
-                new Assert\NotBlank(),
-            ],
-            'body' => [
-                new Assert\NotBlank(),
-            ],
-            'author' => [
-                new Assert\NotBlank(),
-                new Assert\Type(User::class)
-            ]
-        ]);
-    }
-
     public function postId(): PostId
     {
         return $this->postId;
+    }
+
+    private function setPostId(Id $postId): void
+    {
+        $this->postId = PostId::fromId($postId);
     }
 
     public function title(): string
@@ -59,13 +55,37 @@ class CreatePostCommand implements Command
         return $this->title;
     }
 
+    private function setTitle(?string $title): void
+    {
+        $specification = new PostTitleSpecification();
+        if ($specification->isSatisfiedBy($title, $this->context)) {
+            $this->title = $title;
+        }
+    }
+
     public function body(): string
     {
         return $this->body;
     }
 
-    public function author(): User
+    private function setBody(?string $body): void
     {
-        return $this->author;
+        $specification = new PostBodySpecification();
+        if ($specification->isSatisfiedBy($body, $this->context)) {
+            $this->body = $body;
+        }
+    }
+
+    public function authorId(): UserId
+    {
+        return $this->authorId;
+    }
+
+    public function setAuthorId(?string $authorId): void
+    {
+        $specification = new PostAuthorIdSpecification();
+        if ($specification->isSatisfiedBy($authorId, $this->context)) {
+            $this->authorId = UserId::fromString($authorId);
+        }
     }
 }

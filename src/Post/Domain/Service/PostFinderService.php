@@ -5,11 +5,11 @@ namespace App\Post\Domain\Service;
 use App\Post\Domain\Exception\PostNotFoundException;
 use App\Post\Domain\Post;
 use App\Post\Domain\PostId;
-use App\Post\Domain\Repository\PostRepository;
+use App\Post\Domain\Repository\PostReadableRepository;
 
 class PostFinderService
 {
-    public function __construct(private PostRepository $repository)
+    public function __construct(private PostReadableRepository $repository)
     {}
 
     public function find(PostId $postId): ?Post

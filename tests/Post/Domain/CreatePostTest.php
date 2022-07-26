@@ -3,10 +3,10 @@
 namespace App\Tests\Post\Domain;
 
 use App\Post\Domain\Event\PostWasCreatedEvent;
+use App\Post\Domain\Exception\InvalidPostBodyException;
+use App\Post\Domain\Exception\InvalidPostTitleException;
 use App\Post\Domain\Post;
-use App\Shared\Domain\Exception\DomainValidationException;
 use App\Tests\Lib\Event\DomainEventTester;
-use App\Tests\Lib\Validation\DomainValidationExceptionTester;
 use App\Tests\Post\Domain\Mock\PostIdMother;
 use App\Tests\User\Domain\Mock\UserMother;
 use Lib\Random\RandomStringGenerator;
@@ -38,79 +38,42 @@ class CreatePostTest extends TestCase
 
     public function testPostIsNotCreatedWithEmptyTitle(): void
     {
-        try {
-            $postId = PostIdMother::random();
-            $author = UserMother::one();
-            $title = '';
-            $body = 'Body';
+        $postId = PostIdMother::random();
+        $author = UserMother::one();
+        $title = '';
+        $body = 'Body';
 
-            Post::create($postId, $title, $body, $author);
-            $this->fail('DomainValidationException was not thrown');
-        } catch (DomainValidationException $e) {
-            $this->assertTrue(
-                DomainValidationExceptionTester::exceptionHasError(
-                    $e,
-                    'title',
-                    'This value should not be blank.'
-                ),
-                'Blank title error message was not found');
-        }
+        $this->expectException(InvalidPostTitleException::class);
+        Post::create($postId, $title, $body, $author);
     }
 
     public function testPostIsNotCreatedWithOverlongTitle(): void
     {
-        try {
-            $postId = PostIdMother::random();
-            $author = UserMother::one();
-            $title = RandomStringGenerator::generate(self::TITLE_MAX_LENGTH + 1);
-            $body = 'Body';
-
-            Post::create($postId, $title, $body, $author);
-            $this->fail('DomainValidationException was not thrown');
-        } catch (DomainValidationException $e) {
-            $this->assertTrue(
-                DomainValidationExceptionTester::exceptionHasError(
-                    $e,
-                    'title',
-                    sprintf('This value is too long. It should have %d characters or less.', self::TITLE_MAX_LENGTH)
-                ),
-                'Overlong title error message was not found');
-        }
+        $postId = PostIdMother::random();
+        $author = UserMother::one();
+        $title = RandomStringGenerator::generate(self::TITLE_MAX_LENGTH + 1);
+        $body = 'Body';
+        $this->expectException(InvalidPostTitleException::class);
+        Post::create($postId, $title, $body, $author);
     }
 
     public function testPostIsNotCreatedWithEmptyBody(): void
     {
-        try {
-            $postId = PostIdMother::random();
-            $author = UserMother::one();
-            $title = 'Title';
-            $body = '';
-
-            Post::create($postId, $title, $body, $author);
-            $this->fail('DomainValidationException was not thrown');
-        } catch (DomainValidationException $e) {
-            $this->assertTrue(DomainValidationExceptionTester::exceptionHasError($e, 'body', 'This value should not be blank.'), 'Blank body error message was not found');
-        }
+        $postId = PostIdMother::random();
+        $author = UserMother::one();
+        $title = 'Title';
+        $body = '';
+        $this->expectException(InvalidPostBodyException::class);
+        Post::create($postId, $title, $body, $author);
     }
 
     public function testPostIsNotCreatedWithOverlongBody(): void
     {
-        try {
-            $postId = PostIdMother::random();
-            $author = UserMother::one();
-            $title = 'Title';
-            $body = RandomStringGenerator::generate(self::BODY_MAX_LENGTH + 1);;
-
-            Post::create($postId, $title, $body, $author);
-            $this->fail('DomainValidationException was not thrown');
-        } catch (DomainValidationException $e) {
-            $this->assertTrue(
-                DomainValidationExceptionTester::exceptionHasError(
-                    $e,
-                    'body',
-                    sprintf('This value is too long. It should have %d characters or less.', self::BODY_MAX_LENGTH)
-                ),
-                'Overlong body error message was not found');
-        }
+        $postId = PostIdMother::random();
+        $author = UserMother::one();
+        $title = 'Title';
+        $body = RandomStringGenerator::generate(self::BODY_MAX_LENGTH + 1);;
+        $this->expectException(InvalidPostBodyException::class);
+        Post::create($postId, $title, $body, $author);
     }
 }

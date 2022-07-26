@@ -45,9 +45,8 @@ it is already done when the flush method is called by the DoctrineTransactionMid
 However, I want to keep the update action in the repository, so if in the future it has to be changed to 
 something else that doesn't work with Doctrine (API repository, for example), update calls are already done.
 
-**Why you are including a trailing slash in all your routes?** The standard is to remove the trailing slash of all routes 
+**Why are you including a trailing slash in all your routes?** The standard is to remove the trailing slash of all routes 
 but recently I have experimented [problems](https://stackoverflow.com/questions/71311305/how-to-prevent-safari-from-dropping-the-authorization-header-when-following-a-sa) 
 in other projects with Safari and the solution was add this trailing slash in my routes to evade Symfony redirection.
 This is fixed in last Safari updates but I am currently adding this slash to prevents old Safari clients can't request correctly.
-
 

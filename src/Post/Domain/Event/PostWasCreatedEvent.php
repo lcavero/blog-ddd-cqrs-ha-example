@@ -14,7 +14,7 @@ class PostWasCreatedEvent extends AbstractDomainEvent
         parent::__construct(self::EVENT_NAME);
     }
 
-    public static function fromPost(Post $post): self
+    public static function fromEntity(Post $post): self
     {
         return new static($post->id()->toString(), $post->title(), $post->body(), $post->author()->id()->toString());
     }

@@ -9,6 +9,13 @@ class UserMother
     public static function one(): User
     {
         $userId = UserIdMother::random();
-        return User::create($userId);
+        return User::register(
+            $userId,
+            'testuser',
+            '12345',
+            'testuser@test.com',
+            '666886688',
+            'https://testuser.com'
+        );
     }
 }
