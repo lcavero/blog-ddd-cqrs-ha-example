@@ -39,6 +39,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/doc, roles: PUBLIC_ACCESS }
         - { path: ^/api/application-status, roles: PUBLIC_ACCESS }
         - { path: ^/api/posts, methods: [GET], roles: PUBLIC_ACCESS }
         - { path: ^/api/users/register, roles: PUBLIC_ACCESS }

@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
+use OpenApi\Attributes as OA;
 
 class CreatePostAction implements Controller
 {
@@ -22,6 +23,20 @@ class CreatePostAction implements Controller
     {}
 
     #[Route('/', name: 'create_post', methods: ['POST'])]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(type: 'object', properties: [
+            new OA\Property(property: 'title',  type: 'string'),
+            new OA\Property(property: 'body',  type: 'string'),
+        ])
+    )]
+    #[OA\Response(
+        response: 201,
+        description: 'Create a post',
+        content: new OA\JsonContent(type: 'object', properties: [
+            new OA\Property(property: 'id', type: 'string')
+        ])
+    )]
     public function __invoke(Request $request, Security $security): JsonResponse
     {
         $postId = IdFactory::create();

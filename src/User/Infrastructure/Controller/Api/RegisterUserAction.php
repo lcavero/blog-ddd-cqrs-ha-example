@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use OpenApi\Attributes as OA;
 
 class RegisterUserAction implements Controller
 {
@@ -19,6 +20,23 @@ class RegisterUserAction implements Controller
     {}
 
     #[Route('/register/', name: 'register_user', methods: ['POST'])]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(type: 'object', properties: [
+            new OA\Property(property: 'username',  type: 'string'),
+            new OA\Property(property: 'password',  type: 'string'),
+            new OA\Property(property: 'email',  type: 'string'),
+            new OA\Property(property: 'phone',  type: 'string'),
+            new OA\Property(property: 'website',  type: 'string'),
+        ])
+    )]
+    #[OA\Response(
+        response: 201,
+        description: 'Register a user',
+        content: new OA\JsonContent(type: 'object', properties: [
+            new OA\Property(property: 'id', type: 'string')
+        ])
+    )]
     public function __invoke(Request $request): JsonResponse
     {
         $userId = IdFactory::create();
