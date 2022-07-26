@@ -18,8 +18,13 @@ This project has been created using the [Symfony Docker](https://github.com/dung
 8. docker-compose run --rm php chown -R $(id -u):$(id -g) . to set yourself as owner of the project files that were 
 9. created by the docker container.
 
+## Usage
+This is an API project with authentication based in JWT token.
 
-# Comments
+You can first register your user and then make a login request to get the JWT token.
+Then you can do the authenticated requests including this token in an Authorization header with Bearer format.
+
+## Comments
 
 I have started from the [symfony-ddd-cqrs-hexagonal-skeleton](https://github.com/lcavero/symfony-ddd-cqrs-hexagonal-skeleton)
  project (also implemented by myself) as a base that already provides me with some functions that I need, such as CQRS
