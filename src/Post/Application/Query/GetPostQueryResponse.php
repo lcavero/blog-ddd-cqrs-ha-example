@@ -6,12 +6,19 @@ use App\Post\Domain\Post;
 
 class GetPostQueryResponse
 {
-    private function __construct(private string $id, private string $title, private string $body, private string $authorId)
+    private function __construct(private string $id, private string $title, private string $body, private array $author)
     {}
 
     public static function fromEntity(Post $post): self
     {
-        return new static($post->id()->toString(), $post->title(), $post->body(), $post->author()->id()->toString());
+        $author = [
+            'id' => $post->author()->id()->toString(),
+            'username' => $post->author()->username(),
+            'email' => $post->author()->email(),
+            'website' => $post->author()->website()
+        ];
+
+        return new static($post->id()->toString(), $post->title(), $post->body(), $author);
     }
 
     public function id(): string
@@ -29,8 +36,8 @@ class GetPostQueryResponse
         return $this->body;
     }
 
-    public function authorId(): string
+    public function author(): array
     {
-        return $this->authorId;
+        return $this->author;
     }
 }
