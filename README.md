@@ -6,6 +6,18 @@ A Symfony blog project made with CQRS, Hexagonal Architecture and DDD
 
 This project has been created using the [Symfony Docker](https://github.com/dunglas/symfony-docker) repository.
 
+## Configuration
+
+This projects use the [LexikJWTAuthenticationBundle](https://github.com/lexik/LexikJWTAuthenticationBundle) to provide JWT authentication
+so you need to:
+
+Generate the SSL Keys:
+
+``
+$ php bin/console lexik:jwt:generate-keypair
+``
+
+
 ## Deploy
 
 1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/)
