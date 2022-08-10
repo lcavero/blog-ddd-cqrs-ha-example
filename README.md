@@ -6,32 +6,25 @@ A Symfony blog project made with CQRS, Hexagonal Architecture and DDD
 
 This project has been created using the [Symfony Docker](https://github.com/dunglas/symfony-docker) repository.
 
-## Configuration
-
-This projects use the [LexikJWTAuthenticationBundle](https://github.com/lexik/LexikJWTAuthenticationBundle) to provide JWT authentication
-so you need to:
-
-Generate the SSL Keys:
-
-``
-$ php bin/console lexik:jwt:generate-keypair
-``
-
 
 ## Deploy
 
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/)
-2. In docker-compose.override.yml choose between dev or prod environment
-3. Run `docker-compose build --pull --no-cache` to build fresh images
-4. Run `docker-compose up` (the logs will be displayed in the current shell)
-5. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-6. Run `docker-compose down --remove-orphans` to stop the Docker containers.
-7. If you work on linux and cannot edit some of the project files right after the first installation, you can run 
+1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/).
+2. In docker-compose.override.yml choose between dev or prod environment.
+3. Run `docker-compose build --pull --no-cache` to build fresh images.
+4. Run `docker-compose up` (the logs will be displayed in the current shell).
+5. Use `docker exec -it container_name_php /bin/sh` to enter into php container shell.
+6. Generate the SSL Keys: `php bin/console lexik:jwt:generate-keypair` (in php container).
+7. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334). You will see a documentation about the available routes.
+8. Run `docker-compose down --remove-orphans` to stop the Docker containers.
+9. If you work on linux and cannot edit some of the project files right after the first installation, you can run 
 docker-compose run --rm php chown -R $(id -u):$(id -g) . to set yourself as owner of the project files that were 
 created by the docker container.
 
 ## Usage
 This is an API project with authentication based in JWT token.
+
+This projects use the [LexikJWTAuthenticationBundle](https://github.com/lexik/LexikJWTAuthenticationBundle) to provide JWT authentication.
 
 You can first register your user and then make a login request to get the JWT token.
 Then you can do the authenticated requests including this token in an Authorization header with Bearer format.
